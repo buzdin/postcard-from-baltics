@@ -46,7 +46,6 @@ public class PostcardActivity extends Activity
     private TextView locationText;
     private Gallery gallery;
     private ImageView selectedPostcard;
-    private Dialog splashDialog;
 
     private final PostcardModel model = PostcardApplication.getInstance().getModel();
     private final PostcardBitmapLoader loader = new PostcardBitmapLoader();
@@ -76,11 +75,10 @@ public class PostcardActivity extends Activity
 
         return false;
     }
-
+    protected Dialog mSplashDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //setContentView(R.layout.main);
         MyStateSaver data = (MyStateSaver) getLastNonConfigurationInstance();
         if (data != null) {
@@ -96,7 +94,6 @@ public class PostcardActivity extends Activity
             setContentView(R.layout.main);
             // Do your heavy loading here on a background thread
         }
-
         // Getting the views
         selectedPostcard = (ImageView) findViewById(R.id.bigImage);
         gallery = (Gallery) findViewById(R.id.gallery1);
@@ -253,7 +250,7 @@ public class PostcardActivity extends Activity
         MyStateSaver data = new MyStateSaver();
         // Save your important data here
      
-        if (splashDialog != null) {
+        if (mSplashDialog != null) {
             data.showSplashScreen = true;
             removeSplashScreen();
         }
@@ -261,17 +258,17 @@ public class PostcardActivity extends Activity
     }
      
     protected void removeSplashScreen() {
-        if (splashDialog != null) {
-            splashDialog.dismiss();
-            splashDialog = null;
+        if (mSplashDialog != null) {
+            mSplashDialog.dismiss();
+            mSplashDialog = null;
         }
     }
      
     protected void showSplashScreen() {
-        splashDialog = new Dialog(this, R.style.SplashScreen);
-        splashDialog.setContentView(R.layout.splashscreen);
-        splashDialog.setCancelable(false);
-        splashDialog.show();
+        mSplashDialog = new Dialog(this, R.style.SplashScreen);
+        mSplashDialog.setContentView(R.layout.splashscreen);
+        mSplashDialog.setCancelable(false);
+        mSplashDialog.show();
      
         // Set Runnable to remove splash screen just in case
         final Handler handler = new Handler();

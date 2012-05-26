@@ -9,6 +9,8 @@
     <TextView
         android:id="@+id/title"
         android:layout_width="fill_parent"
+        android:gravity="center"
+		android:layout_gravity="center"
         android:layout_height="0dp"
         android:text="Title"
         android:layout_weight="1"
