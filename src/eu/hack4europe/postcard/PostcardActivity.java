@@ -27,7 +27,7 @@ import eu.hack4europe.europeana4j.EuropeanaConnection;
 import eu.hack4europe.europeana4j.EuropeanaItem;
 import eu.hack4europe.europeana4j.EuropeanaQuery;
 import eu.hack4europe.europeana4j.EuropeanaResults;
-import eu.hack4europe.geo.GeoParseJson;
+import eu.hack4europe.postcard.geo.GeoParseJson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class PostcardActivity extends Activity
     private static final String API_KEY = "HTMQFSCKKB";
 
     public static final String MIME_TYPE = "image/jpeg";
-    public static final int RESULT_SIZE = 20;
+    public static final int RESULT_SIZE = 25;
 
     private Gallery gallery;
     private EditText editText;
@@ -112,7 +112,7 @@ public class PostcardActivity extends Activity
     @Override
     protected void onResume() {
         super.onResume();
-        locationManager.requestLocationUpdates(bestProvider, 20000, 1, this);
+        locationManager.requestLocationUpdates(bestProvider, 5 * 60 * 1000, 1, this);
     }
 
     @Override
@@ -174,6 +174,19 @@ public class PostcardActivity extends Activity
             city = GeoParseJson.getCity(location);
         }
 
+        if (city == null) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Location name is not available, check your internet connection",
+                    1000).show();
+            return;
+        }
+
+        if (city.equals(model.getLoadedCity())) {
+            Log.i("postcard", "no need to refresh already in " + city);
+            return;
+        }
+
         model.reset();
 
         try {
@@ -197,6 +210,8 @@ public class PostcardActivity extends Activity
                 ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(), loadedItems, loader);
                 gallery.setAdapter(imageAdapter);
             }
+
+            model.setLoadedCity(city);
 
         } catch (Exception e) {
             Log.e("postcard", "failed", e);
@@ -229,6 +244,7 @@ public class PostcardActivity extends Activity
     @Override
     public void onLocationChanged(Location location) {
         model.setLocation(location);
+        findIt();
     }
 
     @Override

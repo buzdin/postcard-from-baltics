@@ -12,6 +12,7 @@ public class PostcardModel {
     private final List<EuropeanaItem> europeanaItems = new ArrayList<EuropeanaItem>();
     private int selectedItemPosition;
     private Location location;
+    private String loadedCity;
 
     public void reset() {
         europeanaItems.clear();
@@ -45,5 +46,13 @@ public class PostcardModel {
 
     public Location getLocation() {
         return location;
+    }
+
+    public String getLoadedCity() {
+        return loadedCity;
+    }
+
+    public void setLoadedCity(String loadedCity) {
+        this.loadedCity = loadedCity;
     }
 }
