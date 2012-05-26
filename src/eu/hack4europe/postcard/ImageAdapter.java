@@ -43,8 +43,14 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView = new ImageView(context);
 
         EuropeanaItem item = items.get(position);
-        BitmapDownloaderTask task = new BitmapDownloaderTask(imageView);
-        task.execute(item);
+//        BitmapDownloaderTask task = new BitmapDownloaderTask(imageView);
+//        task.execute(item);
+
+        Bitmap bitmap = bitmapLoader.load(item);
+
+        imageView.setImageBitmap(bitmap);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setLayoutParams(new Gallery.LayoutParams(136, 88));
 
         return imageView;
     }
@@ -75,8 +81,6 @@ public class ImageAdapter extends BaseAdapter {
                 ImageView imageView = imageViewReference.get();
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
-                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                    imageView.setLayoutParams(new Gallery.LayoutParams(136, 88));
                 }
             }
         }

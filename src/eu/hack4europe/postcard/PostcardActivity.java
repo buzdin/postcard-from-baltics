@@ -36,6 +36,7 @@ public class PostcardActivity extends Activity
 
     private static final int ENTER_CITY_NAME = 0;
     private static final int ABOUT = 1;
+    private static final int REFRESH = 2;
 
     // This is secret, do not share
     private static final String API_KEY = "HTMQFSCKKB";
@@ -58,7 +59,8 @@ public class PostcardActivity extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, ENTER_CITY_NAME, 0, "Enter Name");
-        menu.add(0, ABOUT, 1, "About");
+        menu.add(0, REFRESH, 2, "Refresh");
+        menu.add(0, ABOUT, 3, "About");
         return true;
     }
 
@@ -66,6 +68,9 @@ public class PostcardActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case ENTER_CITY_NAME:
+                return true;
+            case REFRESH:
+                findIt();
                 return true;
             case ABOUT:
                 return true;
@@ -150,7 +155,7 @@ public class PostcardActivity extends Activity
         // Hardcoded for emulator
         String city;
         if (location == null) {
-            city = "Riga";
+            city = "Sloka";
         } else {
             city = GeoParseJson.getCity(location);
         }
