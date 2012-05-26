@@ -16,6 +16,15 @@ public class DescriptionActivity extends Activity {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.description);
 	        
+	        image = (ImageView) findViewById(R.id.image);
+	        title = (TextView) findViewById(R.id.title);
+	        description = (TextView) findViewById(R.id.description);
+	        share = (ImageButton) findViewById(R.id.share);
 	        
+	        PostcardBitmapLoader pbl = new PostcardBitmapLoader();
+	        pbl.loadAsync(PostcardApplication.getInstance().getModel().getSelectedItem(), image);
+	        
+	        title.setText(PostcardApplication.getInstance().getModel().getSelectedItem().getTitle());
+	        description.setText(PostcardApplication.getInstance().getModel().getSelectedItem().getDescription().toString());
 	    }
 }

@@ -1,13 +1,15 @@
 package eu.hack4europe.postcard;
 
-import java.util.ArrayList;
-
 import android.app.Application;
 
 public class PostcardApplication extends Application {
 	private static PostcardApplication singleton;
-	public static int money;
-    private final PostcardModel model = new PostcardModel();
+    private PostcardModel model;
+
+	public PostcardModel getModel() {
+		return model;
+	}
+
 
 	public static PostcardApplication getInstance() {
 		return singleton;
@@ -16,6 +18,7 @@ public class PostcardApplication extends Application {
 	
 	@Override
 	public void onCreate(){
+		model  = new PostcardModel();
 		super.onCreate();
 		singleton = this;
 	}
