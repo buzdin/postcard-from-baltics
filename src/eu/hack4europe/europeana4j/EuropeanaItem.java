@@ -437,12 +437,12 @@ public class EuropeanaItem {
 
     public static EuropeanaItem loadJSON(String json) {
         Gson gson = new Gson();
-        return (EuropeanaItem) gson.fromJson(json, EuropeanaItem.class);
+        return gson.fromJson(json, EuropeanaItem.class);
     }
 
     public static EuropeanaItem loadJSON(Reader json) {
         Gson gson = new Gson();
-        return (EuropeanaItem) gson.fromJson(json, EuropeanaItem.class);
+        return gson.fromJson(json, EuropeanaItem.class);
     }
 
     public static List<EuropeanaItem> loadJSONList(String json) {

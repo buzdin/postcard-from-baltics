@@ -1,20 +1,15 @@
 package eu.hack4europe.postcard;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -30,9 +25,6 @@ import eu.hack4europe.europeana4j.EuropeanaItem;
 import eu.hack4europe.europeana4j.EuropeanaQuery;
 import eu.hack4europe.europeana4j.EuropeanaResults;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +45,7 @@ public class PostcardActivity extends Activity
     private ImageView selectedPostcard;
 
     private final PostcardModel model = new PostcardModel();
+    private final PostcardBitmapLoader loader = new PostcardBitmapLoader();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,31 +65,25 @@ public class PostcardActivity extends Activity
         selectedPostcard.setOnClickListener(this);
 
         gallery.setOnItemSelectedListener(this);
-        
-        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationListener mlocListener = new MyLocationListener();
-        mlocManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0, mlocListener);
+        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mlocListener);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        try {
-            List<EuropeanaItem> europeanaItems = model.getEuropeanaItems();
-            EuropeanaItem item = europeanaItems.get(position);
-            URL url = new URL(item.getEnclosure());
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream) url.getContent());
-            selectedPostcard.setImageBitmap(bitmap);
-            model.setSelectedItemPosition(position);
-        } catch (IOException ioe) {
-            Log.e("postcard", "URL broken", ioe);
-        }
+        List<EuropeanaItem> europeanaItems = model.getEuropeanaItems();
+        EuropeanaItem item = europeanaItems.get(position);
+        Bitmap bitmap = loader.load(item);
+        selectedPostcard.setImageBitmap(bitmap);
+        model.setSelectedItemPosition(position);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-    	
     }
-        
+
     @Override
     public void onClick(View view) {
         if (view == shareButton) {
@@ -151,14 +138,27 @@ public class PostcardActivity extends Activity
     }
 
     private void shareIt() {
+        EuropeanaItem item = model.getSelectedItem();
+
+        Bitmap bitmap = loader.load(item);
+        Context context = getApplicationContext();
+        String uri = MediaStore.Images.Media.insertImage(
+                context.getContentResolver(),
+                bitmap,
+                item.getTitle(),
+                item.getDescription()
+        );
+
+        Log.i("postcard", "sharing image " + uri);
+
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType(MIME_TYPE);
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, "Sharing this text");
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, "Sharing this text");
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, "Sharing this postcard");
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
 
         startActivity(Intent.createChooser(sharingIntent, "Select a Way to Share"));
     }
-    
+
     public class MyLocationListener implements LocationListener{
 
 	    @Override
@@ -172,20 +172,20 @@ public class PostcardActivity extends Activity
 		    model.setLatitude(loc.getLatitude());
 		    model.setLongitude(loc.getLongitude());
 	    }
-	
+
 	    @Override
 	    public void onProviderDisabled(String provider){
 	    	Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT ).show();
 	    }
-	
+
 	    @Override
 	    public void onProviderEnabled(String provider){
 	    	Toast.makeText( getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
 	    }
-	
+
 	    @Override
 	    public void onStatusChanged(String provider, int status, Bundle extras){
-	
+
 	    }
 
     }/* End of Class MyLocationListener */
