@@ -18,14 +18,8 @@ import java.util.Collections;
 import java.util.List;
 
 
-/**
- * A EuropeanaResults is an object encapsulating the results of a query
- * to Europeana. It can be the result of multiple calls to the Europeana API
- * with the same query (using pagination of results).
- *
- * @author Andr�s Viedma Pel�ez
- */
 public class EuropeanaResults {
+
     private String link;
     private String description;
     private long totalResults;

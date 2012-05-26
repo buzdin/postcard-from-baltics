@@ -1,10 +1,5 @@
 package eu.hack4europe.postcard;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,8 +10,13 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+
 public class ImageAdapter extends BaseAdapter {
-	int mGalleryItemBackground;
+
 	private Context mContext;
 
 	public ImageAdapter(Context c, List<String> urlList) {
@@ -39,8 +39,8 @@ public class ImageAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ImageView i = new ImageView(mContext);
 		try {
-			Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(
-					imageURLs.get(position)).getContent());
+            URL url = new URL(imageURLs.get(position));
+            Bitmap bitmap = BitmapFactory.decodeStream((InputStream) url.getContent());
 			i.setImageBitmap(bitmap);
 		} catch (IOException ioe) {
 			Toast.makeText(mContext, "URL broken", 5000);

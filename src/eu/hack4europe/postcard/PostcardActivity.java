@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,55 +26,59 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostcardActivity extends Activity implements View.OnClickListener {
+public class PostcardActivity extends Activity
+        implements View.OnClickListener, OnItemSelectedListener {
+
+    // This is secret, do not share
+    private static final String API_KEY = "HTMQFSCKKB";
 
     public static final String MIME_TYPE = "image/jpeg";
-    private static final String API_KEY = "HTMQFSCKKB";
     public static final int RESULT_SIZE = 20;
 
-    public Gallery gallery;
-    public EditText editText;
+    private Gallery gallery;
+    private EditText editText;
     private Button shareButton;
-    public Button findButton;
-    public String info;
-    public ImageView largeImg;
+    private Button findButton;
+    private ImageView selectedPostcard;
 
-    public final List<String> urlList = new ArrayList<String>();
+    private final List<EuropeanaItem> europeanaItems = new ArrayList<EuropeanaItem>(RESULT_SIZE);
+    private int selectedItemPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        largeImg = (ImageView) findViewById(R.id.bigImage);
+        // Getting the views
+        selectedPostcard = (ImageView) findViewById(R.id.bigImage);
         gallery = (Gallery) findViewById(R.id.gallery1);
         editText = (EditText) findViewById(R.id.editText1);
         findButton = (Button) findViewById(R.id.button1);
         shareButton = (Button) findViewById(R.id.share);
 
+        // Attaching event listeners
         findButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
+        selectedPostcard.setOnClickListener(this);
 
-        gallery.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(
-                            urlList.get(position)).getContent());
-                    largeImg.setImageBitmap(bitmap);
-                } catch (IOException ioe) {
-                    Toast.makeText(getApplicationContext(), "URL broken", 5000);
-                }
-                // Maybe you can try
-                // i.setImageDrawable(((ImageView) view).getDrawable());
-            }
+        gallery.setOnItemSelectedListener(this);
+    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        try {
+            EuropeanaItem item = europeanaItems.get(position);
+            URL url = new URL(item.getEnclosure());
+            Bitmap bitmap = BitmapFactory.decodeStream((InputStream) url.getContent());
+            selectedPostcard.setImageBitmap(bitmap);
+            selectedItemPosition = position;
+        } catch (IOException ioe) {
+            Log.e("postcard", "URL broken", ioe);
+        }
+    }
 
-            }
-        });
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
     @Override
@@ -82,30 +87,43 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
             shareThis();
         } else if (view == findButton) {
             findIt();
+        } else if (view == selectedPostcard) {
+            clickIt();
         }
     }
 
+    private void clickIt() {
+        EuropeanaItem selectedItem = europeanaItems.get(selectedItemPosition);
+        String title = selectedItem.getTitle();
+        Log.i("postcard", "clicked on " + title);
+    }
+
     private void findIt() {
-        info = editText.getText().toString();
+        Editable text = editText.getText();
+        String info = text.toString();
+
+        europeanaItems.clear();
+
         try {
-            EuropeanaQuery query = new EuropeanaQuery(info);
+            EuropeanaConnection europeana = new EuropeanaConnection(API_KEY);
+
+            EuropeanaQuery query = new EuropeanaQuery();
             query.setType("IMAGE");
             query.setSubject("postcard");
-            //query.setCountry("Riga");
-            EuropeanaConnection europeana = new EuropeanaConnection(API_KEY);
+            query.setLocation(info);
+
             EuropeanaResults res = europeana.search(query, RESULT_SIZE);
 
             if (res.getItemCount() > 0) {
                 List<EuropeanaItem> items = res.getAllItems();
-                List<String> itemURLs = new ArrayList<String>();
+                List<String> thumbnailURLs = new ArrayList<String>();
                 for (EuropeanaItem item : items) {
-                    itemURLs.add(item.getBestThumbnail());
-                    urlList.add(item.getEnclosure());
+                    thumbnailURLs.add(item.getBestThumbnail());
+                    europeanaItems.add(item);
                 }
 
-
-                ImageAdapter imga = new ImageAdapter(getApplicationContext(), itemURLs);
-                gallery.setAdapter(imga);
+                ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(), thumbnailURLs);
+                gallery.setAdapter(imageAdapter);
             }
 
         } catch (Exception e) {

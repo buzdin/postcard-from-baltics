@@ -27,6 +27,7 @@ public class EuropeanaQuery {
     private String type;
     private String country;
     private String language;
+    private String location;
 
     public EuropeanaQuery() {
     }
@@ -170,6 +171,14 @@ public class EuropeanaQuery {
         this.language = language;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     /**
      * @param subject Nuevo valor para subject.
      */
@@ -187,6 +196,7 @@ public class EuropeanaQuery {
         this.addBusquedaCampo(buf, "title", this.title);
         this.addBusquedaCampo(buf, "date", this.date);
         this.addBusquedaCampo(buf, "subject", this.subject);
+        this.addBusquedaCampo(buf, "where", this.location);
         this.addBusquedaCampo(buf, "TYPE", this.type);
         this.addBusquedaCampo(buf, "DATA_PROVIDER", this.dataProvider, false, true);
         this.addBusquedaCampo(buf, "PROVIDER", this.provider, false, true);
