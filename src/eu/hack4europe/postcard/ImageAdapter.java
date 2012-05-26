@@ -45,7 +45,7 @@ public class ImageAdapter extends BaseAdapter {
 
         imageView.setImageBitmap(bitmap);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setLayoutParams(new Gallery.LayoutParams(136, 88));
+        imageView.setLayoutParams(new Gallery.LayoutParams(Math.round((float)(parent.getHeight() * 1.5)), parent.getHeight()));
 
         return imageView;
     }

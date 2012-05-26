@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import eu.hack4europe.europeana4j.EuropeanaItem;
@@ -21,7 +21,7 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
     private ImageView image;
     private TextView title;
     private TextView description;
-    private ImageButton shareButton;
+    private Button shareButton;
 
     private final PostcardModel model = PostcardApplication.getInstance().getModel();
 
@@ -35,7 +35,7 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
         image = (ImageView) findViewById(R.id.image);
         title = (TextView) findViewById(R.id.title);
         description = (TextView) findViewById(R.id.description);
-        shareButton = (ImageButton) findViewById(R.id.shareButton);
+        shareButton = (Button) findViewById(R.id.shareButton);
 
         PostcardBitmapLoader pbl = new PostcardBitmapLoader();
         image.setImageBitmap(pbl.load(PostcardApplication.getInstance().getModel().getSelectedItem()));
