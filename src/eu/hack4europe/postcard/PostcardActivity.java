@@ -52,7 +52,7 @@ public class PostcardActivity extends Activity
     private Button findButton;
     private ImageView selectedPostcard;
 
-    private final PostcardModel model = new PostcardModel();
+    private final PostcardModel model = PostcardApplication.getInstance().getModel();
     private final PostcardBitmapLoader loader = new PostcardBitmapLoader();
 
     private String bestProvider;
