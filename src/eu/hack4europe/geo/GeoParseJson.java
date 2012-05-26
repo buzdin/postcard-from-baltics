@@ -1,14 +1,12 @@
 package eu.hack4europe.geo;
 
-import eu.hack4europe.geo.GeoDAO;
+import android.location.Location;
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-
-import android.util.Log;
-
-import com.google.gson.Gson;
 
 public class GeoParseJson {
 	private static String makeUrl(double lat, double lng) {
@@ -17,8 +15,11 @@ public class GeoParseJson {
 		lng + "&sensor=false&language=en";
 	}
 	
-	public static String getCity(double lat, double lng) {
-	    StringBuffer buffer = null;
+	public static String getCity(Location location) {
+        double lat = location.getLatitude();
+        double lng = location.getLongitude();
+
+        StringBuffer buffer = null;
 	    try {
 	      URL url = new URL(makeUrl(lat, lng));
 	      BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));

@@ -1,5 +1,6 @@
 package eu.hack4europe.postcard;
 
+import android.location.Location;
 import eu.hack4europe.europeana4j.EuropeanaItem;
 
 import java.util.ArrayList;
@@ -10,30 +11,13 @@ public class PostcardModel {
 
     private final List<EuropeanaItem> europeanaItems = new ArrayList<EuropeanaItem>();
     private int selectedItemPosition;
-    private double latitude;
-    private double longitude;
+    private Location location;
 
-	public void reset() {
+    public void reset() {
         europeanaItems.clear();
         selectedItemPosition = 0;
     }
 	
-    public double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-
     public EuropeanaItem getSelectedItem() {
         return europeanaItems.get(selectedItemPosition);
     }
@@ -53,5 +37,13 @@ public class PostcardModel {
 
     public void setSelectedItemPosition(int selectedItemPosition) {
         this.selectedItemPosition = selectedItemPosition;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }

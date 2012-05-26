@@ -4,14 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -30,8 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostcardActivity extends Activity
-        implements View.OnClickListener, OnItemSelectedListener {
+        implements View.OnClickListener, OnItemSelectedListener, LocationListener {
 
+    private static final int ENTER_CITY_NAME = 0;
+    private static final int ABOUT = 1;
 
     // This is secret, do not share
     private static final String API_KEY = "HTMQFSCKKB";
@@ -47,6 +51,28 @@ public class PostcardActivity extends Activity
 
     private final PostcardModel model = new PostcardModel();
     private final PostcardBitmapLoader loader = new PostcardBitmapLoader();
+
+    private String bestProvider;
+    private LocationManager locationManager;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, ENTER_CITY_NAME, 0, "Enter Name");
+        menu.add(0, ABOUT, 1, "About");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case ENTER_CITY_NAME:
+                return true;
+            case ABOUT:
+                return true;
+        }
+
+        return false;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,9 +93,25 @@ public class PostcardActivity extends Activity
 
         gallery.setOnItemSelectedListener(this);
 
-        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener mlocListener = new MyLocationListener();
-        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mlocListener);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        bestProvider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        model.setLocation(location);
+        findIt();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        locationManager.requestLocationUpdates(bestProvider, 20000, 1, this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
     }
 
     @Override
@@ -103,10 +145,16 @@ public class PostcardActivity extends Activity
     }
 
     private void findIt() {
-        Editable text = editText.getText();
-        
-        String city = GeoParseJson.getCity(model.getLatitude(), model.getLongitude());
-        
+        Location location = model.getLocation();
+
+        // Hardcoded for emulator
+        String city;
+        if (location == null) {
+            city = "Riga";
+        } else {
+            city = GeoParseJson.getCity(location);
+        }
+
         model.reset();
 
         try {
@@ -159,34 +207,21 @@ public class PostcardActivity extends Activity
         startActivity(Intent.createChooser(sharingIntent, "Select a Way to Share"));
     }
 
-    public class MyLocationListener implements LocationListener{
+    @Override
+    public void onLocationChanged(Location location) {
+        model.setLocation(location);
+    }
 
-	    @Override
-	    public void onLocationChanged(Location loc){
-		    loc.getLatitude();
-		    loc.getLongitude();
-		    String Text = "My current location is: " +
-		    "Latitude = " + loc.getLatitude() +
-		    "Longitude = " + loc.getLongitude();
-		    Log.i("card", Text);
-		    model.setLatitude(loc.getLatitude());
-		    model.setLongitude(loc.getLongitude());
-	    }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle bundle) {
+    }
 
-	    @Override
-	    public void onProviderDisabled(String provider){
-	    	Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT ).show();
-	    }
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
 
-	    @Override
-	    public void onProviderEnabled(String provider){
-	    	Toast.makeText( getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
-	    }
+    @Override
+    public void onProviderDisabled(String provider) {
+    }
 
-	    @Override
-	    public void onStatusChanged(String provider, int status, Bundle extras){
-
-	    }
-
-    }/* End of Class MyLocationListener */
 }
