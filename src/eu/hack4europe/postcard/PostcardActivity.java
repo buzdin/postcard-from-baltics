@@ -1,9 +1,19 @@
 package eu.hack4europe.postcard;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -28,6 +38,7 @@ import java.util.List;
 
 public class PostcardActivity extends Activity
         implements View.OnClickListener, OnItemSelectedListener {
+
 
     // This is secret, do not share
     private static final String API_KEY = "HTMQFSCKKB";
@@ -61,6 +72,10 @@ public class PostcardActivity extends Activity
         selectedPostcard.setOnClickListener(this);
 
         gallery.setOnItemSelectedListener(this);
+        
+        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationListener mlocListener = new MyLocationListener();
+        mlocManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0, mlocListener);
     }
 
     @Override
@@ -79,8 +94,9 @@ public class PostcardActivity extends Activity
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+    	
     }
-
+        
     @Override
     public void onClick(View view) {
         if (view == shareButton) {
@@ -130,7 +146,7 @@ public class PostcardActivity extends Activity
 
         } catch (Exception e) {
             Log.e("postcard", "failed", e);
-            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), 5000);
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), 5000).show();
         }
     }
 
@@ -142,5 +158,35 @@ public class PostcardActivity extends Activity
 
         startActivity(Intent.createChooser(sharingIntent, "Select a Way to Share"));
     }
+    
+    public class MyLocationListener implements LocationListener{
 
+	    @Override
+	    public void onLocationChanged(Location loc){
+		    loc.getLatitude();
+		    loc.getLongitude();
+		    String Text = "My current location is: " +
+		    "Latitude = " + loc.getLatitude() +
+		    "Longitude = " + loc.getLongitude();
+		    Log.i("card", Text);
+		    model.setLatitude(loc.getLatitude());
+		    model.setLongitude(loc.getLongitude());
+	    }
+	
+	    @Override
+	    public void onProviderDisabled(String provider){
+	    	Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT ).show();
+	    }
+	
+	    @Override
+	    public void onProviderEnabled(String provider){
+	    	Toast.makeText( getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
+	    }
+	
+	    @Override
+	    public void onStatusChanged(String provider, int status, Bundle extras){
+	
+	    }
+
+    }/* End of Class MyLocationListener */
 }
