@@ -134,8 +134,7 @@ public class PostcardActivity extends Activity
             public void run() {
                 EuropeanaItem selectedItem = model.getSelectedItem();
                 if (selectedItem == item) { // making smooth scrolling
-                    Bitmap bitmap = loader.load(item);
-                    selectedPostcard.setImageBitmap(bitmap);
+                    loader.loadAsync(item, selectedPostcard);
                 }
             }
         }, 400);
