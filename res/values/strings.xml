@@ -3,5 +3,5 @@
     <string name="app_name">Postcard from Baltics</string>
     <string name="hint">Tap postcard to share</string>
     <string name="location">You seem to be in</string>
-    <string name="share">Share postcard</string>
+    <string name="share">Send postcard</string>
 </resources>
