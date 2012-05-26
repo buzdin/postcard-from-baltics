@@ -91,7 +91,6 @@ public class EuropeanaConnection {
                 builder.append("\": \"");
                 int iLastQuote = jsonLine.lastIndexOf("\"");
                 String fieldValue = jsonLine.substring(iSep + 4, iLastQuote);
-                fieldValue = fieldValue.replace("\"", "\\\"");
                 builder.append(fieldValue);
                 builder.append(jsonLine.substring(iLastQuote));
             }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -28,6 +29,7 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
 
     public static final String MIME_TYPE = "image/jpeg";
     private static final String API_KEY = "HTMQFSCKKB";
+    public static final int RESULT_SIZE = 20;
 
     public Gallery gallery;
     public EditText editText;
@@ -91,7 +93,7 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
             query.setSubject("postcard");
             //query.setCountry("Riga");
             EuropeanaConnection europeana = new EuropeanaConnection(API_KEY);
-            EuropeanaResults res = europeana.search(query, 12);
+            EuropeanaResults res = europeana.search(query, RESULT_SIZE);
 
             if (res.getItemCount() > 0) {
                 List<EuropeanaItem> items = res.getAllItems();
@@ -107,6 +109,7 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
             }
 
         } catch (Exception e) {
+            Log.e("postcard", "failed", e);
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), 5000);
         }
     }

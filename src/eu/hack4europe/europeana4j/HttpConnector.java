@@ -18,12 +18,10 @@ import java.io.OutputStream;
 
 public final class HttpConnector {
 
-    private HttpClient httpClient = null;
-
     public String getURLContent(String url) throws IOException {
         Log.i("http", url);
 
-        HttpClient client = this.getHttpClient();
+        HttpClient client = getHttpClient();
         HttpGet httpGet = new HttpGet(url);
 
         try {
@@ -119,10 +117,7 @@ public final class HttpConnector {
     }
 
     private HttpClient getHttpClient() {
-        if (this.httpClient == null) {
-            this.httpClient = new DefaultHttpClient();
-        }
-        return this.httpClient;
+        return new DefaultHttpClient();
     }
 
 }
