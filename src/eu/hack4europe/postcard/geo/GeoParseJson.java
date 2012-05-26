@@ -15,19 +15,19 @@ public class GeoParseJson {
         double lat = location.getLatitude();
         double lng = location.getLongitude();
 
-        StringBuilder builder = null;
+        StringBuilder builder = new StringBuilder();
         try {
             URL url = new URL(makeGoogleUrl(lat, lng));
             InputStreamReader inputStreamReader = new InputStreamReader(url.openStream());
             BufferedReader in = new BufferedReader(inputStreamReader);
             String inputLine;
-            builder = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 builder.append(inputLine);
             }
             in.close();
         } catch (IOException e) {
             Log.e("geo", "failed to get place name", e);
+            return null;
         }
 
         Gson gson = new Gson();
@@ -46,4 +46,5 @@ public class GeoParseJson {
         return "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
                 lat + "," + lng + "&sensor=false&language=en";
     }
+
 }

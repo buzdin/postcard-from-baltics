@@ -23,8 +23,6 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
     private TextView description;
     private Button shareButton;
 
-    private final PostcardModel model = PostcardApplication.getInstance().getModel();
-
     private final PostcardBitmapLoader loader = new PostcardBitmapLoader();
 
     @Override
@@ -38,15 +36,17 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
         shareButton = (Button) findViewById(R.id.shareButton);
 
         PostcardBitmapLoader pbl = new PostcardBitmapLoader();
-        image.setImageBitmap(pbl.load(PostcardApplication.getInstance().getModel().getSelectedItem()));
+        PostcardModel model = PostcardApplication.getInstance().getModel();
+        image.setImageBitmap(pbl.load(model.getSelectedItem()));
 
-        title.setText(PostcardApplication.getInstance().getModel().getSelectedItem().getTitle());
-        description.setText(PostcardApplication.getInstance().getModel().getSelectedItem().getDescription().toString());
+        title.setText(model.getSelectedItem().getTitle());
+        description.setText(model.getSelectedItem().getDescription());
 
         shareButton.setOnClickListener(this);
     }
 
     private void shareIt() {
+        PostcardModel model = PostcardApplication.getInstance().getModel();
         EuropeanaItem item = model.getSelectedItem();
 
         Bitmap bitmap = loader.load(item);
@@ -58,14 +58,15 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
                 item.getDescription()
         );
 
-        Log.i("postcard", "sharing image " + uri);
+        Log.i("postcard", "sending image " + uri);
 
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType(MIME_TYPE);
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, "Sharing this postcard");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "From " + model.getLoadedCity());
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, "Wish you were here...");
         sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
 
-        startActivity(Intent.createChooser(sharingIntent, "Select a Way to Share"));
+        startActivity(Intent.createChooser(sharingIntent, "Select a Way to Send"));
     }
 
     @Override
