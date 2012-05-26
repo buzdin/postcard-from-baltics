@@ -9,13 +9,12 @@ package eu.hack4europe.europeana4j;
 /**
  * The EuropeanaQuery is an encapsulated query to a EuropeanaConnection
  * object.
- * 
+ *
  * @author Andr�s Viedma Pel�ez
  */
-public class EuropeanaQuery
-{
+public class EuropeanaQuery {
     private String wholeSubQuery;
-    
+
     private String generalTerms;
     private String provider;
     private String dataProvider;
@@ -28,231 +27,209 @@ public class EuropeanaQuery
     private String type;
     private String country;
     private String language;
-    
-    public EuropeanaQuery ()
-    {
+
+    public EuropeanaQuery() {
     }
 
-    public EuropeanaQuery (String cadenaLibre)
-    {
+    public EuropeanaQuery(String cadenaLibre) {
         this.wholeSubQuery = cadenaLibre;
     }
 
     /**
      * @return Devuelve el valor de cadenaLibre.
      */
-    public String getWholeSubQuery ()
-    {
+    public String getWholeSubQuery() {
         return wholeSubQuery;
     }
 
     /**
      * @param cadenaLibre Nuevo valor para cadenaLibre.
      */
-    public void setWholeSubQuery (String cadenaLibre)
-    {
+    public void setWholeSubQuery(String cadenaLibre) {
         this.wholeSubQuery = cadenaLibre;
     }
 
     /**
      * @return Devuelve el valor de terminosTodosCampos.
      */
-    public String getGeneralTerms ()
-    {
+    public String getGeneralTerms() {
         return generalTerms;
     }
 
     /**
      * @param terminosTodosCampos Nuevo valor para terminosTodosCampos.
      */
-    public void setGeneralTerms (String terminosTodosCampos)
-    {
+    public void setGeneralTerms(String terminosTodosCampos) {
         this.generalTerms = terminosTodosCampos;
     }
 
     /**
      * @return Devuelve el valor de provider.
      */
-    public String getProvider ()
-    {
+    public String getProvider() {
         return provider;
     }
 
     /**
      * @param provider Nuevo valor para provider.
      */
-    public void setProvider (String provider)
-    {
+    public void setProvider(String provider) {
         this.provider = provider;
     }
 
     /**
      * @return Devuelve el valor de dataProvider.
      */
-    public String getDataProvider ()
-    {
+    public String getDataProvider() {
         return dataProvider;
     }
 
     /**
      * @param dataProvider Nuevo valor para dataProvider.
      */
-    public void setDataProvider (String dataProvider)
-    {
+    public void setDataProvider(String dataProvider) {
         this.dataProvider = dataProvider;
     }
 
     /**
      * @return Devuelve el valor de creator.
      */
-    public String getCreator ()
-    {
+    public String getCreator() {
         return creator;
     }
 
     /**
      * @param creator Nuevo valor para creator.
      */
-    public void setCreator (String creator)
-    {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
-    
+
     /**
      * @return Devuelve el valor de title.
      */
-    public String getTitle ()
-    {
+    public String getTitle() {
         return title;
     }
 
     /**
      * @param title Nuevo valor para title.
      */
-    public void setTitle (String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
     /**
      * @return Devuelve el valor de date.
      */
-    public String getDate ()
-    {
+    public String getDate() {
         return date;
     }
 
     /**
      * @param date Nuevo valor para date.
      */
-    public void setDate (String date)
-    {
+    public void setDate(String date) {
         this.date = date;
     }
 
     /**
      * @return Devuelve el valor de subject.
      */
-    public String getSubject ()
-    {
+    public String getSubject() {
         return subject;
     }
-    
+
     /**
      * @return Devuelve el valor de type.
      */
-    public String getType ()
-    {
+    public String getType() {
         return type;
     }
 
     /**
      * @param type Nuevo valor para type.
      */
-    public void setType (String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
-    
+
     public String getCountry() {
-		return country;
-	}
+        return country;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	public String getLanguage() {
-		return language;
-	}
+    public String getLanguage() {
+        return language;
+    }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
-	/**
+    /**
      * @param subject Nuevo valor para subject.
      */
-    public void setSubject (String subject)
-    {
+    public void setSubject(String subject) {
         this.subject = subject;
     }
 
-    public String getQueryString()
-    {
+    public String getQueryString() {
         StringBuffer buf = new StringBuffer();
 
-        this.addBusquedaCampo (buf, null, this.wholeSubQuery);
-        
-        this.addBusquedaCampo (buf, "text", this.generalTerms);
-        this.addBusquedaCampo (buf, "creator", this.creator);
-        this.addBusquedaCampo (buf, "title", this.title);
-        this.addBusquedaCampo (buf, "date", this.date);
-        this.addBusquedaCampo (buf, "subject", this.subject);
-        this.addBusquedaCampo (buf, "TYPE", this.type);
-        this.addBusquedaCampo (buf, "DATA_PROVIDER", this.dataProvider, false, true);
-        this.addBusquedaCampo (buf, "PROVIDER", this.provider, false, true);
-        this.addBusquedaCampo (buf, "DATA_PROVIDER", this.notDataProvider, true, true);
-        this.addBusquedaCampo (buf, "PROVIDER", this.notProvider, true, true);
-        this.addBusquedaCampo (buf, "COUNTRY", this.country, false, true);
-        this.addBusquedaCampo (buf, "LANGUAGE", this.language, false, true);
-        
+        this.addBusquedaCampo(buf, null, this.wholeSubQuery);
+
+        this.addBusquedaCampo(buf, "text", this.generalTerms);
+        this.addBusquedaCampo(buf, "creator", this.creator);
+        this.addBusquedaCampo(buf, "title", this.title);
+        this.addBusquedaCampo(buf, "date", this.date);
+        this.addBusquedaCampo(buf, "subject", this.subject);
+        this.addBusquedaCampo(buf, "TYPE", this.type);
+        this.addBusquedaCampo(buf, "DATA_PROVIDER", this.dataProvider, false, true);
+        this.addBusquedaCampo(buf, "PROVIDER", this.provider, false, true);
+        this.addBusquedaCampo(buf, "DATA_PROVIDER", this.notDataProvider, true, true);
+        this.addBusquedaCampo(buf, "PROVIDER", this.notProvider, true, true);
+        this.addBusquedaCampo(buf, "COUNTRY", this.country, false, true);
+        this.addBusquedaCampo(buf, "LANGUAGE", this.language, false, true);
+
         return buf.toString();
     }
-    
-    private void addBusquedaCampo (StringBuffer buf, String campo, String valor)
-    {
-        this.addBusquedaCampo (buf, campo, valor, false, false);
+
+    private void addBusquedaCampo(StringBuffer buf, String campo, String valor) {
+        this.addBusquedaCampo(buf, campo, valor, false, false);
     }
-    private void addBusquedaCampo (StringBuffer buf, String campo, String valor, boolean not, boolean forzarComillas)
-    {
-        if (valor == null)  return;
-        
+
+    private void addBusquedaCampo(StringBuffer buf, String campo, String valor, boolean not, boolean forzarComillas) {
+        if (valor == null) return;
+
         valor = valor.trim();
-        if (valor.length() == 0)  return;
+        if (valor.length() == 0) return;
 
         if (not) {
-            buf.append (" NOT ");
+            buf.append(" NOT ");
         } else if (buf.length() > 0) {
-            buf.append (" AND ");
+            buf.append(" AND ");
         }
-        
+
         if (campo != null) {
-            buf.append (campo);
-            buf.append (": ");
+            buf.append(campo);
+            buf.append(": ");
         }
-        
-        buf.append ("(");
-        
-        if (forzarComillas && !valor.startsWith ("\"")) {
-            buf.append ("\"");
-            buf.append (valor);
-            buf.append ("\"");
+
+        buf.append("(");
+
+        if (forzarComillas && !valor.startsWith("\"")) {
+            buf.append("\"");
+            buf.append(valor);
+            buf.append("\"");
         } else {
-            buf.append (valor);
+            buf.append(valor);
         }
-        buf.append (")");
+        buf.append(")");
     }
-    
-    
+
+
 }

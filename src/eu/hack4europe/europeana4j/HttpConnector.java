@@ -1,162 +1,126 @@
-/*
- * HttpConnector.java - europeana4j
- * (C) 2011 Digibis S.L.
- */
-
 package eu.hack4europe.europeana4j;
 
+import android.util.Log;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 
-
-/**
- * A HttpConnector is a class encapsulating simple HTTP access.
- * 
- * @author Andres Viedma Pel�ez
- */
-public class HttpConnector
-{
-    private static final int CONNECTION_RETRIES = 3;
-    private static final int TIMEOUT_CONNECTION = 40000;
-    private static final int STATUS_OK_START = 200;    
-    private static final int STATUS_OK_END = 299;    
+public final class HttpConnector {
 
     private HttpClient httpClient = null;
-    
-    
-    public String getURLContent (String url)
-            throws IOException
-    {
-        HttpClient client = this.getHttpClient (CONNECTION_RETRIES, TIMEOUT_CONNECTION);
-        GetMethod consulta = new GetMethod (url);
-        
-        try {
-            client.executeMethod (consulta);
-            
-            if (consulta.getStatusCode ()>= STATUS_OK_START && consulta.getStatusCode ()<=STATUS_OK_END) {
-                String res = consulta.getResponseBodyAsString();
-                return res;
-            } else {
-                return null;
-            }
-            
-        } finally {
-            consulta.releaseConnection();
-        }
-    }
-    
-    
-    public boolean writeURLContent (String url, OutputStream out)
-            throws IOException
-    {
-        return writeURLContent (url, out, null);
-    }
-    
 
-    public boolean writeURLContent (String url, OutputStream out, String requiredMime)
-            throws IOException
-    {
-        HttpClient client = this.getHttpClient (CONNECTION_RETRIES, TIMEOUT_CONNECTION);
-        GetMethod consulta = new GetMethod (url);
+    public String getURLContent(String url) throws IOException {
+        Log.i("http", url);
+
+        HttpClient client = this.getHttpClient();
+        HttpGet httpGet = new HttpGet(url);
+
         try {
-            client.executeMethod (consulta);
-            
-            Header tipoMimeHead = consulta.getResponseHeader ("Content-Type");
-            String tipoMimeResp = "";
-            if (tipoMimeHead != null)  tipoMimeResp = tipoMimeHead.getValue();
-            
-            if (consulta.getStatusCode ()>= STATUS_OK_START && consulta.getStatusCode ()<=STATUS_OK_END
-                    && ((requiredMime == null) || ((tipoMimeResp != null) && tipoMimeResp.contains (requiredMime)))) {
-                InputStream in = consulta.getResponseBodyAsStream();
-                
+            HttpResponse response = client.execute(httpGet);
+            HttpEntity entity = response.getEntity();
+            StatusLine statusLine = response.getStatusLine();
+
+            if (entity != null) {
+                try {
+                    if (isOk(statusLine)) {
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                        try {
+                            entity.writeTo(outputStream);
+                            return outputStream.toString();
+                        } finally {
+                            outputStream.close();
+                        }
+                    } else {
+                        return "";
+                    }
+                } catch (RuntimeException e) {
+                    Log.e("http", "failed request", e);
+                    // Aborting request in case of exception
+                    httpGet.abort();
+                    throw e;
+                }
+            }
+        } finally {
+            client.getConnectionManager().shutdown();
+        }
+
+        return "";
+    }
+
+    private boolean isOk(StatusLine statusLine) {
+        return statusLine.getStatusCode() >= HttpStatus.SC_OK
+                && statusLine.getStatusCode() <= HttpStatus.SC_MULTI_STATUS;
+    }
+
+    public boolean writeURLContent(String url, OutputStream out, String requiredMime)
+            throws IOException {
+        Log.i("http", url + ":" + requiredMime);
+
+        HttpClient client = this.getHttpClient();
+        HttpGet httpGet = new HttpGet(url);
+
+        try {
+            HttpResponse response = client.execute(httpGet);
+            HttpEntity entity = response.getEntity();
+            StatusLine statusLine = response.getStatusLine();
+
+            Header[] headers = response.getHeaders("Content-Type");
+            String contentType = headers[0].getValue();
+
+            if (isOk(statusLine) && contentType.contains(requiredMime)) {
+                InputStream content = entity.getContent();
+
                 // Copy input stream to output stream
-                byte[] b = new byte [4 * 1024];
+                byte[] b = new byte[4 * 1024];
                 int read;
-                while ((read = in.read(b)) != -1) {
+                while ((read = content.read(b)) != -1) {
                     out.write(b, 0, read);
                 }
-                
-                consulta.releaseConnection();
+
+                content.close();
                 return true;
             } else {
                 return false;
             }
-            
         } finally {
-            consulta.releaseConnection();
+            client.getConnectionManager().shutdown();
         }
     }
-    
 
-    public boolean silentWriteURLContent (String url, OutputStream out, String mimeType)
-    {
+
+    public boolean silentWriteURLContent(String url, OutputStream out, String mimeType) {
         try {
-            return this.writeURLContent (url, out, mimeType);
-            
+            return this.writeURLContent(url, out, mimeType);
         } catch (Exception e) {
             return false;
         }
     }
 
-    
-    public boolean checkURLContent (String url, String requiredMime)
-    {
+
+    public boolean checkURLContent(String url, String requiredMime) {
         OutputStream out = new OutputStream() {
             @Override
-            public void write (int b)
-                    throws IOException
-            {
+            public void write(int b) throws IOException {
             }
         };
-        
-        boolean bOk = this.silentWriteURLContent (url, out, requiredMime);
-        return bOk;
+
+        return this.silentWriteURLContent(url, out, requiredMime);
     }
-    
-    private HttpClient getHttpClient (int reintentosConexion, int timeoutConexion)
-    {
+
+    private HttpClient getHttpClient() {
         if (this.httpClient == null) {
-            HttpClient client = new HttpClient();
-            
-            //Se configura el n�mero de reintentos
-            client.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
-                    new DefaultHttpMethodRetryHandler(reintentosConexion, false));
-            
-            //Se comprueban las propiedades proxy del sistema. Si est�n rellenas, se rellena
-            String proxyHost = System.getProperty ("http.proxyHost");
-            if ((proxyHost != null) && (proxyHost.length() > 0)){
-                String proxyPortSrt = System.getProperty ("http.proxyPort");
-                if (proxyPortSrt == null)  proxyPortSrt = "8080";
-                int proxyPort = Integer.parseInt (proxyPortSrt);
-                
-                client.getHostConfiguration().setProxy (proxyHost, proxyPort);                        
-            }
-    
-            //Se configura el timeout de la conexion. Primero se intenta asignar los par�metros
-            //pasados. Si est�n vac�os, se pone el par�metro por defecto
-            boolean bTimeout = false;
-            String connectTimeOut = System.getProperty ("sun.net.client.defaultConnectTimeout");
-            if ((connectTimeOut != null) && (connectTimeOut.length() > 0)){
-                client.getParams().setIntParameter ("sun.net.client.defaultConnectTimeout",Integer.parseInt (connectTimeOut));
-                bTimeout = true;
-            }
-            String readTimeOut = System.getProperty ("sun.net.client.defaultReadTimeout");
-            if ((readTimeOut != null) && (readTimeOut.length() > 0)){
-                client.getParams().setIntParameter ("sun.net.client.defaultReadTimeout",Integer.parseInt (readTimeOut));
-                bTimeout = true;
-            }
-            if (!bTimeout){
-                client.getParams().setIntParameter (HttpMethodParams.SO_TIMEOUT,timeoutConexion);            
-            }
-            
-            this.httpClient = client;
+            this.httpClient = new DefaultHttpClient();
         }
         return this.httpClient;
     }
