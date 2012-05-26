@@ -220,7 +220,7 @@ public class PostcardActivity extends Activity
                 }
                 model.setEuropeanaItems(loadedItems);
 
-                Drawable spinner = getResources().getDrawable(R.drawable.spinner);
+                Drawable spinner = getResources().getDrawable(android.R.drawable.ic_menu_slideshow);
                 ImageAdapter imageAdapter = new ImageAdapter(
                         getApplicationContext(),
                         loadedItems,
