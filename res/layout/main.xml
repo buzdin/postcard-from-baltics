@@ -5,34 +5,6 @@
               android:layout_height="fill_parent"
               android:weightSum="6">
 
-    <LinearLayout
-            android:id="@+id/menu"
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-        <EditText
-                android:id="@+id/editText1"
-                android:layout_width="wrap_content"
-                android:layout_weight="1.75"
-                android:layout_height="wrap_content">
-            <requestFocus/>
-        </EditText>
-
-        <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.25"
-                android:text="Find Them"/>
-
-        <Button
-                android:id="@+id/share"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Share This"/>
-    </LinearLayout>
-
     <Gallery
             android:id="@+id/gallery1"
             android:layout_width="match_parent"

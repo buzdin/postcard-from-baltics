@@ -3,23 +3,18 @@ package eu.hack4europe.postcard;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -43,13 +38,9 @@ public class PostcardActivity extends Activity
     // This is secret, do not share
     private static final String API_KEY = "HTMQFSCKKB";
 
-    public static final String MIME_TYPE = "image/jpeg";
     public static final int RESULT_SIZE = 25;
 
     private Gallery gallery;
-    private EditText editText;
-    private Button shareButton;
-    private Button findButton;
     private ImageView selectedPostcard;
 
     private final PostcardModel model = PostcardApplication.getInstance().getModel();
@@ -89,15 +80,9 @@ public class PostcardActivity extends Activity
         // Getting the views
         selectedPostcard = (ImageView) findViewById(R.id.bigImage);
         gallery = (Gallery) findViewById(R.id.gallery1);
-        editText = (EditText) findViewById(R.id.editText1);
-        findButton = (Button) findViewById(R.id.button1);
-        shareButton = (Button) findViewById(R.id.share);
 
         // Attaching event listeners
-        findButton.setOnClickListener(this);
-        shareButton.setOnClickListener(this);
         selectedPostcard.setOnClickListener(this);
-
         gallery.setOnItemSelectedListener(this);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -146,11 +131,7 @@ public class PostcardActivity extends Activity
 
     @Override
     public void onClick(View view) {
-        if (view == shareButton) {
-            shareIt();
-        } else if (view == findButton) {
-            findIt();
-        } else if (view == selectedPostcard) {
+        if (view == selectedPostcard) {
             clickIt();
         }
     }
@@ -217,28 +198,6 @@ public class PostcardActivity extends Activity
             Log.e("postcard", "failed", e);
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), 5000).show();
         }
-    }
-
-    private void shareIt() {
-        EuropeanaItem item = model.getSelectedItem();
-
-        Bitmap bitmap = loader.load(item);
-        Context context = getApplicationContext();
-        String uri = MediaStore.Images.Media.insertImage(
-                context.getContentResolver(),
-                bitmap,
-                item.getTitle(),
-                item.getDescription()
-        );
-
-        Log.i("postcard", "sharing image " + uri);
-
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType(MIME_TYPE);
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, "Sharing this postcard");
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
-
-        startActivity(Intent.createChooser(sharingIntent, "Select a Way to Share"));
     }
 
     @Override
