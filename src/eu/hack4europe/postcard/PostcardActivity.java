@@ -31,6 +31,7 @@ import eu.hack4europe.geo.GeoParseJson;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class PostcardActivity extends Activity
         implements View.OnClickListener, OnItemSelectedListener, LocationListener {
 
@@ -147,6 +148,8 @@ public class PostcardActivity extends Activity
         EuropeanaItem selectedItem = model.getSelectedItem();
         String title = selectedItem.getTitle();
         Log.i("postcard", "clicked on " + title);
+        Intent navigate = new Intent(PostcardActivity.this, DescriptionActivity.class);
+        startActivity(navigate);
     }
 
     private void findIt() {
