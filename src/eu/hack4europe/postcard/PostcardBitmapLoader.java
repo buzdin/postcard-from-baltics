@@ -19,18 +19,31 @@ public final class PostcardBitmapLoader {
     private final Map<String, Bitmap> cache = new WeakHashMap<String, Bitmap>();
 
     public void loadAsync(EuropeanaItem item, ImageView imageView) {
+        String enclosure = item.getEnclosure();
+        Bitmap cached = cache.get(enclosure);
+        if (cached != null) {
+            Log.i("postcard", "cache hit");
+            imageView.setImageBitmap(cached);
+            return;
+        }
+
         BitmapDownloaderTask task = new BitmapDownloaderTask(imageView);
         task.execute(item);
     }
 
     public Bitmap load(EuropeanaItem item) {
         String enclosure = item.getEnclosure();
-
         Bitmap cached = cache.get(enclosure);
         if (cached != null) {
             Log.i("postcard", "cache hit");
             return cached;
         }
+
+        return internalLoad(item);
+    }
+
+    private Bitmap internalLoad(EuropeanaItem item) {
+        String enclosure = item.getEnclosure();
 
         InputStream content = null;
         try {
@@ -48,7 +61,7 @@ public final class PostcardBitmapLoader {
                 try {
                     content.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("http", "fail", e);
                 }
             }
         }
@@ -66,7 +79,7 @@ public final class PostcardBitmapLoader {
         // Actual download method, run in the task thread
         protected Bitmap doInBackground(EuropeanaItem... params) {
             // params comes from the execute() call: params[0] is the url.
-            return load(params[0]);
+            return internalLoad(params[0]);
         }
 
         @Override

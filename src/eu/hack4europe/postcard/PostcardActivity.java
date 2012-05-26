@@ -42,7 +42,7 @@ public class PostcardActivity extends Activity
     // This is secret, do not share
     private static final String API_KEY = "HTMQFSCKKB";
 
-    public static final int RESULT_SIZE = 50;
+    public static final int RESULT_SIZE = 30;
 
     private TextView locationText;
     private Gallery gallery;

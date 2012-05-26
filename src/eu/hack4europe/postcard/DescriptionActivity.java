@@ -37,7 +37,7 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
 
         PostcardBitmapLoader pbl = new PostcardBitmapLoader();
         PostcardModel model = PostcardApplication.getInstance().getModel();
-        image.setImageBitmap(pbl.load(model.getSelectedItem()));
+        pbl.loadAsync(model.getSelectedItem(), image);
 
         title.setText(model.getSelectedItem().getTitle());
         description.setText(model.getSelectedItem().getDescription());
