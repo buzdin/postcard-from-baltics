@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout 
+        android:id="@+id/imageLayout"
+        android:layout_below="@+id/title"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+       	<ImageView
+        	android:id="@+id/image"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content" 
+        	android:src="@android:drawable/ic_menu_gallery"/>
+       	
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionLayout"
+        android:layout_below="@+id/imageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+       	
+        <TextView 
+            android:id="@+id/description"
+            android:text="Description"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"/>
+        
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/shareButton"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_send" />
+
+</RelativeLayout>
