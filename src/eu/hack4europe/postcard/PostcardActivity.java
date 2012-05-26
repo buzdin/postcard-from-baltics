@@ -24,6 +24,7 @@ import eu.hack4europe.europeana4j.EuropeanaConnection;
 import eu.hack4europe.europeana4j.EuropeanaItem;
 import eu.hack4europe.europeana4j.EuropeanaQuery;
 import eu.hack4europe.europeana4j.EuropeanaResults;
+import eu.hack4europe.geo.GeoParseJson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,8 +104,9 @@ public class PostcardActivity extends Activity
 
     private void findIt() {
         Editable text = editText.getText();
-        String info = text.toString();
-
+        
+        String city = GeoParseJson.getCity(model.getLatitude(), model.getLongitude());
+        
         model.reset();
 
         try {
@@ -113,7 +115,7 @@ public class PostcardActivity extends Activity
             EuropeanaQuery query = new EuropeanaQuery();
             query.setType("IMAGE");
             query.setSubject("postcard");
-            query.setLocation(info);
+            query.setLocation(city);
 
             EuropeanaResults res = europeana.search(query, RESULT_SIZE);
 
