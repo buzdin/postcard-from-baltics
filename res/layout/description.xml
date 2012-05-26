@@ -19,7 +19,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_weight="4"
+        android:layout_weight="4.5"
         android:layout_height="0dp">
         
        	<ImageView
@@ -30,31 +30,20 @@
        	
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_weight="1.5"
-        android:layout_height="0dp"
-        android:orientation="vertical" >
-       	
-        <TextView 
-            android:id="@+id/description"
-            android:text="Description"
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"/>
-        
-    </ScrollView>
+    <TextView 
+    	android:id="@+id/description"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Description"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"/>
     
-	<RelativeLayout 
-	    android:layout_width="match_parent"
+    <Button
+		android:id="@+id/shareButton"
+		android:gravity="center"
+		android:layout_gravity="center"
+	    android:text="@string/share"     
 	    android:layout_weight="1"
-        android:layout_height="0dp">
-    	<Button
-	       android:id="@+id/shareButton"
-	       android:layout_alignParentBottom="true"
-	       android:layout_alignParentRight="true"   
-	       android:text="@string/share"     
-	       android:gravity="center_vertical|center_horizontal"
-	       android:layout_width="wrap_content"
-	       android:layout_height="wrap_content" />
-	</RelativeLayout>
+	    android:layout_width="wrap_content"
+	    android:layout_height="0dp" />
 </LinearLayout>
