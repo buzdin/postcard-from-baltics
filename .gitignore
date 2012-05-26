@@ -1,3 +1,14 @@
+# IDE stuff
+*.iml
+*.ipr
+*.iws
+.idea
+.classpath
+.project
+.settings
+build/
+out/
+
 # built application files
 *.apk
 *.ap_
