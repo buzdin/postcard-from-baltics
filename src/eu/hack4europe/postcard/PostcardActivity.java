@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -123,10 +124,21 @@ public class PostcardActivity extends Activity
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         List<EuropeanaItem> europeanaItems = model.getEuropeanaItems();
-        EuropeanaItem item = europeanaItems.get(position);
-        Bitmap bitmap = loader.load(item);
-        selectedPostcard.setImageBitmap(bitmap);
+        final EuropeanaItem item = europeanaItems.get(position);
+
         model.setSelectedItemPosition(position);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                EuropeanaItem selectedItem = model.getSelectedItem();
+                if (selectedItem == item) { // making smooth scrolling
+                    Bitmap bitmap = loader.load(item);
+                    selectedPostcard.setImageBitmap(bitmap);
+                }
+            }
+        }, 400);
     }
 
     @Override
