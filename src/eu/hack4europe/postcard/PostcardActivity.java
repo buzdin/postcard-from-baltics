@@ -1,6 +1,10 @@
 package eu.hack4europe.postcard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
@@ -23,9 +27,6 @@ import eu.hack4europe.europeana4j.EuropeanaItem;
 import eu.hack4europe.europeana4j.EuropeanaQuery;
 import eu.hack4europe.europeana4j.EuropeanaResults;
 import eu.hack4europe.postcard.geo.GeoParseJson;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class PostcardActivity extends Activity
@@ -71,12 +72,25 @@ public class PostcardActivity extends Activity
 
         return false;
     }
-
+    protected Dialog mSplashDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-
+        //setContentView(R.layout.main);
+        MyStateSaver data = (MyStateSaver) getLastNonConfigurationInstance();
+        if (data != null) {
+            // Show splash screen if still loading
+            if (data.showSplashScreen) {
+                showSplashScreen();
+            }
+            setContentView(R.layout.main);        
+     
+            // Rebuild your UI with your saved state here
+        } else {
+            showSplashScreen();
+            setContentView(R.layout.main);
+            // Do your heavy loading here on a background thread
+        }
         // Getting the views
         selectedPostcard = (ImageView) findViewById(R.id.bigImage);
         gallery = (Gallery) findViewById(R.id.gallery1);
@@ -217,5 +231,43 @@ public class PostcardActivity extends Activity
     @Override
     public void onProviderDisabled(String provider) {
     }
-
+    
+    public Object onRetainNonConfigurationInstance() {
+        MyStateSaver data = new MyStateSaver();
+        // Save your important data here
+     
+        if (mSplashDialog != null) {
+            data.showSplashScreen = true;
+            removeSplashScreen();
+        }
+        return data;
+    }
+     
+    protected void removeSplashScreen() {
+        if (mSplashDialog != null) {
+            mSplashDialog.dismiss();
+            mSplashDialog = null;
+        }
+    }
+     
+    protected void showSplashScreen() {
+        mSplashDialog = new Dialog(this, R.style.SplashScreen);
+        mSplashDialog.setContentView(R.layout.splashscreen);
+        mSplashDialog.setCancelable(false);
+        mSplashDialog.show();
+     
+        // Set Runnable to remove splash screen just in case
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            removeSplashScreen();
+          }
+        }, 13000);
+    }
+ 
+    private class MyStateSaver {
+        public boolean showSplashScreen = true;
+        // Your other important fields here
+    }
 }
