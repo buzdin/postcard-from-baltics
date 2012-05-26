@@ -49,10 +49,12 @@ public final class PostcardBitmapLoader {
         try {
             Log.i("postcard", "fetching " + enclosure);
             URL url = new URL(enclosure);
-            content = (InputStream) url.getContent();
-            Bitmap bitmap = BitmapFactory.decodeStream(content);
-            cache.put(enclosure, bitmap);
-            return bitmap;
+            synchronized (this) {
+                content = (InputStream) url.getContent();
+                Bitmap bitmap = BitmapFactory.decodeStream(content);
+                cache.put(enclosure, bitmap);
+                return bitmap;
+            }
         } catch (IOException e) {
             Log.e("http", "Failed to load bitmap: " + enclosure, e);
             throw new RuntimeException(e);
@@ -66,7 +68,7 @@ public final class PostcardBitmapLoader {
             }
         }
     }
-    
+
     class BitmapDownloaderTask extends AsyncTask<EuropeanaItem, Void, Bitmap> {
 
         private final WeakReference<ImageView> imageViewReference;
