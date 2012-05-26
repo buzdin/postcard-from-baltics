@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import eu.hack4europe.europeana4j.EuropeanaConnection;
 import eu.hack4europe.europeana4j.EuropeanaItem;
@@ -42,6 +43,7 @@ public class PostcardActivity extends Activity
 
     public static final int RESULT_SIZE = 25;
 
+    private TextView locationText;
     private Gallery gallery;
     private ImageView selectedPostcard;
 
@@ -95,6 +97,7 @@ public class PostcardActivity extends Activity
         // Getting the views
         selectedPostcard = (ImageView) findViewById(R.id.bigImage);
         gallery = (Gallery) findViewById(R.id.gallery1);
+        locationText = (TextView) findViewById(R.id.location);
 
         // Attaching event listeners
         selectedPostcard.setOnClickListener(this);
@@ -218,7 +221,7 @@ public class PostcardActivity extends Activity
             }
 
             model.setLoadedCity(city);
-
+            locationText.setText(getString(R.string.location) + " " + city);
         } catch (Exception e) {
             Log.e("postcard", "failed", e);
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), 5000).show();

@@ -4,15 +4,14 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:weightSum="6">
-              
+
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hint"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"/>
 
     <ImageView
             android:id="@+id/bigImage"
@@ -21,7 +20,16 @@
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:src="@android:drawable/ic_menu_gallery"/>
-    
+
+    <TextView
+            android:id="@+id/hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <Gallery
             android:id="@+id/gallery1"
             android:layout_width="match_parent"
