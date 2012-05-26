@@ -1,8 +1,5 @@
 package eu.hack4europe.postcard;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -28,6 +25,9 @@ import eu.hack4europe.europeana4j.EuropeanaItem;
 import eu.hack4europe.europeana4j.EuropeanaQuery;
 import eu.hack4europe.europeana4j.EuropeanaResults;
 import eu.hack4europe.postcard.geo.GeoParseJson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PostcardActivity extends Activity
@@ -172,7 +172,10 @@ public class PostcardActivity extends Activity
         // Hardcoded for emulator
         String city;
         if (location == null) {
-            city = "Sloka";
+            Location defaultLocation = new Location("");
+            defaultLocation.setLatitude(56.9471);
+            defaultLocation.setLongitude(23.6192);
+            city = GeoParseJson.getCity(defaultLocation);
         } else {
             city = GeoParseJson.getCity(location);
         }
