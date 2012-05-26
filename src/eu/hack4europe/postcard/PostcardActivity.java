@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,7 +42,7 @@ public class PostcardActivity extends Activity
     // This is secret, do not share
     private static final String API_KEY = "HTMQFSCKKB";
 
-    public static final int RESULT_SIZE = 25;
+    public static final int RESULT_SIZE = 50;
 
     private TextView locationText;
     private Gallery gallery;
@@ -216,7 +217,12 @@ public class PostcardActivity extends Activity
                 }
                 model.setEuropeanaItems(loadedItems);
 
-                ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(), loadedItems, loader);
+                Drawable spinner = getResources().getDrawable(R.drawable.spinner);
+                ImageAdapter imageAdapter = new ImageAdapter(
+                        getApplicationContext(),
+                        loadedItems,
+                        loader,
+                        spinner);
                 gallery.setAdapter(imageAdapter);
             }
 

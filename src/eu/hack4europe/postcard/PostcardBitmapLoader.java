@@ -11,8 +11,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public final class PostcardBitmapLoader {
+
+    private final Map<String, Bitmap> cache = new WeakHashMap<String, Bitmap>();
 
     public void loadAsync(EuropeanaItem item, ImageView imageView) {
         BitmapDownloaderTask task = new BitmapDownloaderTask(imageView);
@@ -21,11 +25,21 @@ public final class PostcardBitmapLoader {
 
     public Bitmap load(EuropeanaItem item) {
         String enclosure = item.getEnclosure();
+
+        Bitmap cached = cache.get(enclosure);
+        if (cached != null) {
+            Log.i("postcard", "cache hit");
+            return cached;
+        }
+
         InputStream content = null;
         try {
+            Log.i("postcard", "fetching " + enclosure);
             URL url = new URL(enclosure);
             content = (InputStream) url.getContent();
-            return BitmapFactory.decodeStream(content);
+            Bitmap bitmap = BitmapFactory.decodeStream(content);
+            cache.put(enclosure, bitmap);
+            return bitmap;
         } catch (IOException e) {
             Log.e("http", "Failed to load bitmap: " + enclosure, e);
             throw new RuntimeException(e);
