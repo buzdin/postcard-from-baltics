@@ -41,8 +41,7 @@ public class PostcardActivity extends Activity
     private Button findButton;
     private ImageView selectedPostcard;
 
-    private final List<EuropeanaItem> europeanaItems = new ArrayList<EuropeanaItem>(RESULT_SIZE);
-    private int selectedItemPosition;
+    private final PostcardModel model = new PostcardModel();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,11 +66,12 @@ public class PostcardActivity extends Activity
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         try {
+            List<EuropeanaItem> europeanaItems = model.getEuropeanaItems();
             EuropeanaItem item = europeanaItems.get(position);
             URL url = new URL(item.getEnclosure());
             Bitmap bitmap = BitmapFactory.decodeStream((InputStream) url.getContent());
             selectedPostcard.setImageBitmap(bitmap);
-            selectedItemPosition = position;
+            model.setSelectedItemPosition(position);
         } catch (IOException ioe) {
             Log.e("postcard", "URL broken", ioe);
         }
@@ -84,7 +84,7 @@ public class PostcardActivity extends Activity
     @Override
     public void onClick(View view) {
         if (view == shareButton) {
-            shareThis();
+            shareIt();
         } else if (view == findButton) {
             findIt();
         } else if (view == selectedPostcard) {
@@ -93,7 +93,7 @@ public class PostcardActivity extends Activity
     }
 
     private void clickIt() {
-        EuropeanaItem selectedItem = europeanaItems.get(selectedItemPosition);
+        EuropeanaItem selectedItem = model.getSelectedItem();
         String title = selectedItem.getTitle();
         Log.i("postcard", "clicked on " + title);
     }
@@ -102,7 +102,7 @@ public class PostcardActivity extends Activity
         Editable text = editText.getText();
         String info = text.toString();
 
-        europeanaItems.clear();
+        model.reset();
 
         try {
             EuropeanaConnection europeana = new EuropeanaConnection(API_KEY);
@@ -117,10 +117,12 @@ public class PostcardActivity extends Activity
             if (res.getItemCount() > 0) {
                 List<EuropeanaItem> items = res.getAllItems();
                 List<String> thumbnailURLs = new ArrayList<String>();
+                List<EuropeanaItem> loadedItems = new ArrayList<EuropeanaItem>();
                 for (EuropeanaItem item : items) {
                     thumbnailURLs.add(item.getBestThumbnail());
-                    europeanaItems.add(item);
+                    loadedItems.add(item);
                 }
+                model.setEuropeanaItems(loadedItems);
 
                 ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(), thumbnailURLs);
                 gallery.setAdapter(imageAdapter);
@@ -132,10 +134,11 @@ public class PostcardActivity extends Activity
         }
     }
 
-    private void shareThis() {
+    private void shareIt() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType(MIME_TYPE);
         sharingIntent.putExtra(Intent.EXTRA_TEXT, "Sharing this text");
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, "Sharing this text");
 
         startActivity(Intent.createChooser(sharingIntent, "Select a Way to Share"));
     }
