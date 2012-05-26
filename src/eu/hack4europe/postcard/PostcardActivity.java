@@ -119,15 +119,13 @@ public class PostcardActivity extends Activity
 
             if (res.getItemCount() > 0) {
                 List<EuropeanaItem> items = res.getAllItems();
-                List<String> thumbnailURLs = new ArrayList<String>();
                 List<EuropeanaItem> loadedItems = new ArrayList<EuropeanaItem>();
                 for (EuropeanaItem item : items) {
-                    thumbnailURLs.add(item.getBestThumbnail());
                     loadedItems.add(item);
                 }
                 model.setEuropeanaItems(loadedItems);
 
-                ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(), thumbnailURLs);
+                ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(), loadedItems, loader);
                 gallery.setAdapter(imageAdapter);
             }
 
