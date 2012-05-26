@@ -2,21 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#808080"
+    android:weightSum="2">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello" />
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
-
+    <LinearLayout 
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="fill_parent">
+	    <ImageView
+	        android:id="@+id/imageView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:padding="10dp"
+	        android:src="@drawable/splashscreen" />
+	</LinearLayout>
+	
+    <LinearLayout 
+        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="fill_parent">
+	    
+	    <ProgressBar
+	        android:id="@+id/progressBar1"
+	        style="?android:attr/progressBarStyleLarge"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center" />
+	</LinearLayout>
+	
 </LinearLayout>
