@@ -5,18 +5,18 @@
               android:layout_height="fill_parent"
               android:weightSum="6">
 
-    <Gallery
-            android:id="@+id/gallery1"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"/>
-
     <ImageView
             android:id="@+id/bigImage"
-            android:layout_below="@id/gallery1"
             android:layout_weight="5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:src="@android:drawable/ic_menu_gallery"/>
+    
+    <Gallery
+            android:id="@+id/gallery1"
+            android:layout_below="@+id/bigImage"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"/>
 
 </LinearLayout>

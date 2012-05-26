@@ -38,7 +38,7 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
         shareButton = (ImageButton) findViewById(R.id.shareButton);
 
         PostcardBitmapLoader pbl = new PostcardBitmapLoader();
-        pbl.loadAsync(PostcardApplication.getInstance().getModel().getSelectedItem(), image);
+        image.setImageBitmap(pbl.loadFullImage(PostcardApplication.getInstance().getModel().getSelectedItem()));
 
         title.setText(PostcardApplication.getInstance().getModel().getSelectedItem().getTitle());
         description.setText(PostcardApplication.getInstance().getModel().getSelectedItem().getDescription().toString());
@@ -49,7 +49,7 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
     private void shareIt() {
         EuropeanaItem item = model.getSelectedItem();
 
-        Bitmap bitmap = loader.load(item);
+        Bitmap bitmap = loader.loadFullImage(item);
         Context context = getApplicationContext();
         String uri = MediaStore.Images.Media.insertImage(
                 context.getContentResolver(),
