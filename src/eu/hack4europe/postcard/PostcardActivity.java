@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -120,6 +121,13 @@ public class PostcardActivity extends Activity
         locationManager.removeUpdates(this);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+      super.onConfigurationChanged(newConfig);
+      findIt();
+    }
+
+    
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         List<EuropeanaItem> europeanaItems = model.getEuropeanaItems();

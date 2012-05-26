@@ -20,27 +20,6 @@ public final class PostcardBitmapLoader {
     }
 
     public Bitmap load(EuropeanaItem item) {
-        String thumbnail = item.getBestThumbnail();
-        InputStream content = null;
-        try {
-            URL url = new URL(thumbnail);
-            content = (InputStream) url.getContent();
-            return BitmapFactory.decodeStream(content);
-        } catch (IOException e) {
-            Log.e("http", "Failed to load bitmap: " + thumbnail, e);
-            throw new RuntimeException(e);
-        } finally {
-            if (content != null) {
-                try {
-                    content.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public Bitmap loadFullImage(EuropeanaItem item) {
         String enclosure = item.getEnclosure();
         InputStream content = null;
         try {
