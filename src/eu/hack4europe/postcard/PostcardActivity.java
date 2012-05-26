@@ -1,5 +1,8 @@
 package eu.hack4europe.postcard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -28,9 +31,6 @@ import eu.hack4europe.europeana4j.EuropeanaQuery;
 import eu.hack4europe.europeana4j.EuropeanaResults;
 import eu.hack4europe.postcard.geo.GeoParseJson;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class PostcardActivity extends Activity
         implements View.OnClickListener, OnItemSelectedListener, LocationListener {
@@ -56,9 +56,12 @@ public class PostcardActivity extends Activity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, ENTER_CITY_NAME, 0, "Enter Name");
-        menu.add(0, REFRESH, 2, "Refresh");
-        menu.add(0, ABOUT, 3, "About");
+        MenuItem city = menu.add(0, ENTER_CITY_NAME, 0, "Enter Name");
+        city.setIcon(android.R.drawable.ic_menu_compass);
+        MenuItem refresh = menu.add(0, REFRESH, 2, "Refresh");
+        refresh.setIcon(android.R.drawable.ic_menu_rotate);
+        MenuItem about = menu.add(0, ABOUT, 3, "About");
+        about.setIcon(android.R.drawable.ic_menu_info_details);
         return true;
     }
 
