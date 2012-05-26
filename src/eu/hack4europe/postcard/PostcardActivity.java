@@ -1,10 +1,20 @@
 package eu.hack4europe.postcard;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
@@ -14,9 +24,6 @@ import eu.hack4europe.europeana4j.EuropeanaConnection;
 import eu.hack4europe.europeana4j.EuropeanaItem;
 import eu.hack4europe.europeana4j.EuropeanaQuery;
 import eu.hack4europe.europeana4j.EuropeanaResults;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PostcardActivity extends Activity implements View.OnClickListener {
 
@@ -31,6 +38,7 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
 	public String apiKey;
 	public String info;
 	public ImageView largeImg;
+	public List<String> urlList;
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -42,6 +50,7 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
     	gallery = (Gallery) findViewById(R.id.gallery1);
     	editText = (EditText) findViewById(R.id.editText1);
     	button = (Button)findViewById(R.id.button1);
+    	urlList = new ArrayList<String>();
     	
     	OnClickListener ocl = new OnClickListener() {
 			
@@ -62,8 +71,7 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
 						for (int i = 0; i < items.size(); i++) {
 							EuropeanaItem item = items.get(i);
 							itemURLs.add(item.getBestThumbnail());
-							
-
+							urlList.add(item.getEnclosure());
 						}
 						
 
@@ -82,6 +90,26 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
 
         shareButton = (Button) findViewById(R.id.share);
         shareButton.setOnClickListener(this);
+    	gallery.setOnItemSelectedListener(new OnItemSelectedListener() {
+    		@Override
+    		public void onItemSelected (AdapterView<?> parent, View view, int position, long id) {
+    			try {
+    				Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(
+    						urlList.get(position)).getContent());
+    				largeImg.setImageBitmap(bitmap);
+    			} catch (IOException ioe) {
+    				Toast.makeText(getApplicationContext(), "URL broken", 5000);
+    			}
+    	        // Maybe you can try
+    	        // i.setImageDrawable(((ImageView) view).getDrawable());
+    	    }
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+    	});
     }
 
     @Override
@@ -89,6 +117,10 @@ public class PostcardActivity extends Activity implements View.OnClickListener {
         if (view == shareButton) {
             shareThis();
         }
+
+		
+
+
     }
 
     private void shareThis() {
