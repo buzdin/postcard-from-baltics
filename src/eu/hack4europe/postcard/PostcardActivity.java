@@ -1,11 +1,7 @@
 package eu.hack4europe.postcard;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import eu.hack4europe.europeana4j.*;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,9 +10,20 @@ import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
+import eu.hack4europe.europeana4j.EuropeanaConnection;
+import eu.hack4europe.europeana4j.EuropeanaItem;
+import eu.hack4europe.europeana4j.EuropeanaQuery;
+import eu.hack4europe.europeana4j.EuropeanaResults;
 
-public class PostcardActivity extends Activity
-{
+import java.util.ArrayList;
+import java.util.List;
+
+public class PostcardActivity extends Activity implements View.OnClickListener {
+
+    public static final String MIME_TYPE = "image/jpeg";
+
+    private Button shareButton;
+
     /** Called when the activity is first created. */
 	public Gallery gallery;
 	public EditText editText;
@@ -26,7 +33,8 @@ public class PostcardActivity extends Activity
 	public ImageView largeImg;
 	
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     	apiKey = "HTMQFSCKKB";
@@ -71,5 +79,24 @@ public class PostcardActivity extends Activity
 		};
 
 		button.setOnClickListener(ocl);
+
+        shareButton = (Button) findViewById(R.id.share);
+        shareButton.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View view) {
+        if (view == shareButton) {
+            shareThis();
+        }
+    }
+
+    private void shareThis() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType(MIME_TYPE);
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, "Sharing this text");
+
+        startActivity(Intent.createChooser(sharingIntent, "Select a Way to Share"));
+    }
+
 }
