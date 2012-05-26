@@ -18,6 +18,7 @@
     <ImageView
             android:id="@+id/bigImage"
             android:layout_weight="5"
+            android:padding="5dp"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
@@ -29,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="@string/hint"
             android:paddingLeft="5dp"
-            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Gallery
