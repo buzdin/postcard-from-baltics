@@ -83,21 +83,7 @@ public class PostcardActivity extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.main);
-        MyStateSaver data = (MyStateSaver) getLastNonConfigurationInstance();
-        if (data != null) {
-            // Show splash screen if still loading
-            if (data.showSplashScreen) {
-                showSplashScreen();
-            }
-            setContentView(R.layout.main);        
-     
-            // Rebuild your UI with your saved state here
-        } else {
-            showSplashScreen();
-            setContentView(R.layout.main);
-            // Do your heavy loading here on a background thread
-        }
+        setContentView(R.layout.main);
         // Getting the views
         selectedPostcard = (ImageView) findViewById(R.id.bigImage);
         gallery = (Gallery) findViewById(R.id.gallery1);
