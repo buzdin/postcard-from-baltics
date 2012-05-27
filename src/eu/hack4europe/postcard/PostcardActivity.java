@@ -162,15 +162,8 @@ public class PostcardActivity extends Activity
     public void onClick(View view) {
         if (view == selectedPostcard) {
             clickIt();
-        } /*else if(view == findCityButton){
-        	findCity(cityText.toString());
-        }*/
+        } 
     }
-
-    private void findCity(String string) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	private void clickIt() {
         EuropeanaItem selectedItem = model.getSelectedItem();
@@ -180,19 +173,25 @@ public class PostcardActivity extends Activity
         startActivity(navigate);
     }
 
-    private void findIt() {
-        Location location = model.getLocation();
+    private void findIt(String ... cityLocation) {
+    	String city;
+    	if(cityLocation.length == 1){
+    		city = cityLocation[0];
+    	} else {
+			Location location = model.getLocation();
 
-        // Hardcoded for emulator
-        String city;
-        if (location == null) {
-            Location defaultLocation = new Location("");
-            defaultLocation.setLatitude(56.9471);
-            defaultLocation.setLongitude(23.6192);
-            city = GeoParseJson.getCity(defaultLocation);
-        } else {
-            city = GeoParseJson.getCity(location);
-        }
+			// Hardcoded for emulator
+
+			if (location == null) {
+				Location defaultLocation = new Location("");
+				defaultLocation.setLatitude(56.9471);
+				defaultLocation.setLongitude(23.6192);
+				city = GeoParseJson.getCity(defaultLocation);
+			} else {
+				city = GeoParseJson.getCity(location);
+			}
+    	}
+ 
 
         if (city == null) {
             Toast.makeText(
@@ -287,7 +286,7 @@ public class PostcardActivity extends Activity
 			@Override
 			public void onClick(View v) {
 				String location = cityText.getText().toString();
-				findCity(location);
+				findIt(location);
 			}
 		};
 		
