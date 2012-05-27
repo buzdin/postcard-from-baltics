@@ -22,4 +22,8 @@ Izveidots priekš \'Hack4Europe 2012\' projekts.
 	
 	<string name="shareTitle">Pastkartes no baltijas</string>
     <string name="shareMessage">Sveiciens no Baltijas pastkartēm!</string>
+    
+    <string name="shareSubject">No</string>
+    <string name="shareText">Skaties, kur es esmu! =) </string>
+    
 </resources>

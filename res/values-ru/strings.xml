@@ -22,4 +22,7 @@
     
     <string name="shareTitle">Открытки из Балтии</string>
     <string name="shareMessage">Привет от Открыток из Балтии</string>
+    
+    <string name="shareSubject">Из</string>
+    <string name="shareText">Смотриб, где я! =) </string>
 </resources>

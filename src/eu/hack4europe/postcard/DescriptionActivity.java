@@ -65,8 +65,8 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
 
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType(MIME_TYPE);
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "From " + model.getLoadedCity());
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, "Wish you were here...");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.shareSubject) + model.getLoadedCity());
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.shareText) + " ");
         sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(uri));
 
         startActivity(Intent.createChooser(sharingIntent, "Select a Way to Send"));

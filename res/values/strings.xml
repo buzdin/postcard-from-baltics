@@ -21,4 +21,8 @@ Made for \'Hack4Europe 2012\' project.</string>
     
     <string name="shareTitle">Postcard from baltics</string>
     <string name="shareMessage">Hi from Postcard from Baltics</string>
+    
+    <string name="shareSubject">From</string>
+    <string name="shareText">See, where i am! =) </string>
+    
 </resources>
