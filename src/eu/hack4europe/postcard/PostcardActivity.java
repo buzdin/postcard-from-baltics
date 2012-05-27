@@ -22,10 +22,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import eu.hack4europe.europeana4j.EuropeanaConnection;
@@ -251,9 +253,16 @@ public class PostcardActivity extends Activity
         //there are a lot of settings, for dialog, check them all out!
 
         //set up text
+        
+        ScrollView sView = (ScrollView)dialog.findViewById(R.id.ScrollView01);
+        //Hide the Scollbar
+        sView.setVerticalScrollBarEnabled(true);
+        sView.setHorizontalScrollBarEnabled(false);
+        
+       
         TextView text = (TextView) dialog.findViewById(R.id.TextView01);
         text.setText(R.string.aboutDescription);
-
+        
         //set up image view
         ImageView img = (ImageView) dialog.findViewById(R.id.ImageView01);
         img.setImageResource(R.drawable.ico);
