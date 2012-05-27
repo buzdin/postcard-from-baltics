@@ -171,6 +171,7 @@ public class PostcardActivity extends Activity
         Log.i("postcard", "clicked on " + title);
         Intent navigate = new Intent(PostcardActivity.this, DescriptionActivity.class);
         startActivity(navigate);
+        
     }
 
     private void findIt(String ... cityLocation) {
