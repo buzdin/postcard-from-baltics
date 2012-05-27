@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Postcard from BalticsLV</string>
-    <string name="hint">Tap postcard to share</string>
-    <string name="location">You seem to be in</string>
-    <string name="share">Send postcard</string>
+    <string name="app_name">Pastkartes no Baltijas</string>
+    <string name="hint">Nospiediet lai padalītos</string>
+    <string name="location">Izskatās ka Jūs esat šeit</string>
+    <string name="share">Aizsūtīt pastkarti</string>
     
-    <string name="refreshMenu">Refresh</string>
-    <string name="aboutMenu">About</string>
-    <string name="findCityMenu">Enter City</string>
+    <string name="refreshMenu">Atjaunot</string>
+    <string name="aboutMenu">Par</string>
+    <string name="findCityMenu">Ievadiet pilsētu</string>
     
     <string name="aboutDescription">hello</string>
-    <string name="shareTitle">Postcard from baltics</string>
-    <string name="shareMessage">Hi from Postcard from Baltics</string>
+    <string name="shareTitle">Pastkartes no baltijas</string>
+    <string name="shareMessage">Sveiciens no Baltijas pastkartēm!</string>
 </resources>

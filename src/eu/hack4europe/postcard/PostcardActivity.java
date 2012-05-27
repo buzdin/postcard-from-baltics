@@ -56,11 +56,11 @@ public class PostcardActivity extends Activity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem city = menu.add(0, ENTER_CITY_NAME, 0, "Enter Name");
+        MenuItem city = menu.add(0, ENTER_CITY_NAME, 0, getString(R.string.findCityMenu));
         city.setIcon(android.R.drawable.ic_menu_compass);
-        MenuItem refresh = menu.add(0, REFRESH, 2, "Refresh");
+        MenuItem refresh = menu.add(0, REFRESH, 2, getString(R.string.refreshMenu));
         refresh.setIcon(android.R.drawable.ic_menu_rotate);
-        MenuItem about = menu.add(0, ABOUT, 3, "About");
+        MenuItem about = menu.add(0, ABOUT, 3, getString(R.string.aboutMenu));
         about.setIcon(android.R.drawable.ic_menu_info_details);
         return true;
     }
