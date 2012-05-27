@@ -3,6 +3,7 @@ package eu.hack4europe.postcard;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class SplashScreenActivity extends Activity {
 
@@ -27,9 +28,11 @@ public class SplashScreenActivity extends Activity {
 				} catch (Exception e) {
 					System.out.println("EXc=" + e);
 				} finally {
-					 startActivity(new Intent(SplashScreenActivity.this,
-					 PostcardActivity.class));
-					finish();
+					if(PostcardApplication.getInstance().haveInternet(SplashScreenActivity.this)){
+						startActivity(new Intent(SplashScreenActivity.this,
+						PostcardActivity.class));	
+						finish();
+					}
 				}
 			}
 		};

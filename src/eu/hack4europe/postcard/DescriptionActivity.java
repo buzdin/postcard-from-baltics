@@ -46,6 +46,9 @@ public class DescriptionActivity extends Activity implements View.OnClickListene
     }
 
     private void shareIt() {
+		if(PostcardApplication.getInstance().haveInternet(DescriptionActivity.this)){
+			return;		
+		}
         PostcardModel model = PostcardApplication.getInstance().getModel();
         EuropeanaItem item = model.getSelectedItem();
 

@@ -81,7 +81,7 @@ public class PostcardActivity extends Activity
 
         return false;
     }
-    protected Dialog mSplashDialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +125,9 @@ public class PostcardActivity extends Activity
     
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		if(!PostcardApplication.getInstance().haveInternet(this)){
+            return;
+		} 
         List<EuropeanaItem> europeanaItems = model.getEuropeanaItems();
         final EuropeanaItem item = europeanaItems.get(position);
 
@@ -261,43 +264,5 @@ public class PostcardActivity extends Activity
     @Override
     public void onProviderDisabled(String provider) {
     }
-    
-    public Object onRetainNonConfigurationInstance() {
-        MyStateSaver data = new MyStateSaver();
-        // Save your important data here
-     
-        if (mSplashDialog != null) {
-            data.showSplashScreen = true;
-            removeSplashScreen();
-        }
-        return data;
-    }
-     
-    protected void removeSplashScreen() {
-        if (mSplashDialog != null) {
-            mSplashDialog.dismiss();
-            mSplashDialog = null;
-        }
-    }
-     
-    protected void showSplashScreen() {
-        mSplashDialog = new Dialog(this, R.style.SplashScreen);
-        mSplashDialog.setContentView(R.layout.splashscreen);
-        mSplashDialog.setCancelable(false);
-        mSplashDialog.show();
-     
-        // Set Runnable to remove splash screen just in case
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-          @Override
-          public void run() {
-            removeSplashScreen();
-          }
-        }, 13000);
-    }
- 
-    private class MyStateSaver {
-        public boolean showSplashScreen = true;
-        // Your other important fields here
-    }
+
 }
