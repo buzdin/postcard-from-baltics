@@ -10,13 +10,15 @@
     <string name="findCityMenu">Введите город</string>
     
     <string name="aboutTitle">О нас</string>
-    <string name="aboutDescription">Разработчики:
-Дмитрий Буздин
-Алексей Буздин
-Дмитрий Врублевский
-
+    <string name="aboutDescription">Разработчики:\n
+Дмитрий Буздин\n
+Алексей Буздин\n
+Дмитрий Врублевский\n
+\n
 Сделано для проекта  \'Hack4Europe 2012\'.
 	</string>
+    
+    <string name="findCity">Найти открытки</string>
     
     <string name="shareTitle">Открытки из Балтии</string>
     <string name="shareMessage">Привет от Открыток из Балтии</string>

@@ -10,13 +10,16 @@
     <string name="findCityMenu">Ievadiet pilsētu</string>
     
     <string name="aboutTitle">Par mums</string>
-    <string name="aboutDescription">Izstrādātāji:
-Dmitrijs Buzdins
-Aleksejs Buzdins
-Dmitrijs Vrublevskis
-
+    <string name="aboutDescription">Izstrādātāji:\n
+Dmitrijs Buzdins\n
+Aleksejs Buzdins\n
+Dmitrijs Vrublevskis\n
+\n
 Izveidots priekš \'Hack4Europe 2012\' projekts.
 	</string>
-<string name="shareTitle">Pastkartes no baltijas</string>
+	
+	<string name="findCity">Atrast Pastkartes</string>
+	
+	<string name="shareTitle">Pastkartes no baltijas</string>
     <string name="shareMessage">Sveiciens no Baltijas pastkartēm!</string>
 </resources>
