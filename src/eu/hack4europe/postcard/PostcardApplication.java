@@ -50,20 +50,6 @@ public class PostcardApplication extends Application {
     	}
     	
     	return false;
-    	
-    	/*
-		try {
-			NetworkInfo info = (NetworkInfo) ((ConnectivityManager) ctx
-					.getSystemService(Context.CONNECTIVITY_SERVICE))
-					.getActiveNetworkInfo();
-
-			if (info == null || !info.isConnected()) {
-				return false;
-			}
-			return true;
-		} catch (Exception e) {
-			return false;
-		}*/
     }
 
 }
