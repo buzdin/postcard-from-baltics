@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,6 +75,7 @@ public class PostcardActivity extends Activity
                 findIt();
                 return true;
             case ABOUT:
+            	aboutDialog();
                 return true;
         }
 
@@ -222,7 +224,26 @@ public class PostcardActivity extends Activity
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), 5000).show();
         }
     }
+    
+    public void aboutDialog() {
+    	//set up dialog
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.aboutdialog);
+        dialog.setTitle(getString(R.string.aboutTitle));
+        dialog.setCancelable(true);
+        //there are a lot of settings, for dialog, check them all out!
 
+        //set up text
+        TextView text = (TextView) dialog.findViewById(R.id.TextView01);
+        text.setText(R.string.aboutDescription);
+
+        //set up image view
+        ImageView img = (ImageView) dialog.findViewById(R.id.ImageView01);
+        img.setImageResource(R.drawable.ico);
+
+        //set up button
+        dialog.show();
+    }
     @Override
     public void onLocationChanged(Location location) {
         model.setLocation(location);

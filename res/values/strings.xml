@@ -9,7 +9,9 @@
     <string name="aboutMenu">About</string>
     <string name="findCityMenu">Enter City</string>
     
-    <string name="aboutDescription">hello</string>
+    <string name="aboutTitle">About</string>
+    <string name="aboutDescription">Hello! Smile =)</string>
+    
     <string name="shareTitle">Postcard from baltics</string>
     <string name="shareMessage">Hi from Postcard from Baltics</string>
 </resources>

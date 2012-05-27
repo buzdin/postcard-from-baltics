@@ -9,7 +9,9 @@
     <string name="aboutMenu">О нас</string>
     <string name="findCityMenu">Введите город</string>
     
-    <string name="aboutDescription">hello</string>
+    <string name="aboutTitle">О нас</string>
+    <string name="aboutDescription">Привет! Smile =)</string>
+    
     <string name="shareTitle">Открытки из Балтии</string>
     <string name="shareMessage">Привет от Открыток из Балтии</string>
 </resources>
