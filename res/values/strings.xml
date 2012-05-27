@@ -10,8 +10,14 @@
     <string name="findCityMenu">Enter City</string>
     
     <string name="aboutTitle">About</string>
-    <string name="aboutDescription">Hello! Smile =)</string>
-    
+    <string name="aboutDescription">Developers:
+Dmitry Buzdin
+Alexey Buzdin
+Dmitry Vrublevsky
+
+Made for 'Hack4Europe 2012' project.
+	</string>
+
     <string name="shareTitle">Postcard from baltics</string>
     <string name="shareMessage">Hi from Postcard from Baltics</string>
 </resources>
