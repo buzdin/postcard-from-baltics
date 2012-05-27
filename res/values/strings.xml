@@ -10,6 +10,7 @@
     <string name="findCityMenu">Enter City</string>
     
     <string name="aboutTitle">About</string>
+    <string name="findCity"> Find postcards</string>
     <string name="aboutDescription">Developers:
 Dmitry Buzdin
 Alexey Buzdin

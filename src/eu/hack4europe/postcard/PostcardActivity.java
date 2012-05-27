@@ -19,9 +19,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,7 +41,8 @@ public class PostcardActivity extends Activity
     private static final int ENTER_CITY_NAME = 0;
     private static final int ABOUT = 1;
     private static final int REFRESH = 2;
-
+    private static final int FIND_CITY = 3;
+    
     // This is secret, do not share
     private static final String API_KEY = "HTMQFSCKKB";
 
@@ -48,13 +51,16 @@ public class PostcardActivity extends Activity
     private TextView locationText;
     private Gallery gallery;
     private ImageView selectedPostcard;
-
+    
+//    private EditText cityText;
+ //   private Button findCityButton;
+    
     private final PostcardModel model = PostcardApplication.getInstance().getModel();
     private final PostcardBitmapLoader loader = new PostcardBitmapLoader();
 
     private String bestProvider;
     private LocationManager locationManager;
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem city = menu.add(0, ENTER_CITY_NAME, 0, getString(R.string.findCityMenu));
@@ -70,6 +76,7 @@ public class PostcardActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case ENTER_CITY_NAME:
+            	cityFindDialog();
                 return true;
             case REFRESH:
                 findIt();
@@ -153,10 +160,17 @@ public class PostcardActivity extends Activity
     public void onClick(View view) {
         if (view == selectedPostcard) {
             clickIt();
-        }
+        } /*else if(view == findCityButton){
+        	findCity(cityText.toString());
+        }*/
     }
 
-    private void clickIt() {
+    private void findCity(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void clickIt() {
         EuropeanaItem selectedItem = model.getSelectedItem();
         String title = selectedItem.getTitle();
         Log.i("postcard", "clicked on " + title);
@@ -247,6 +261,31 @@ public class PostcardActivity extends Activity
         //set up button
         dialog.show();
     }
+    
+    public void cityFindDialog() {
+    	//set up dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.city_find_dialog);
+        dialog.setTitle(getString(R.string.findCityMenu));
+        dialog.setCancelable(true);
+        //there are a lot of settings, for dialog, check them all out!
+
+        final EditText cityText = (EditText) dialog.findViewById(R.id.findCityDialogEditText);
+        final Button findCityButton= (Button) dialog.findViewById(R.id.findCityDialogButton);
+        
+        OnClickListener ocl = new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String location = cityText.getText().toString();
+				findCity(location);
+			}
+		};
+		
+		findCityButton.setOnClickListener(ocl);
+        dialog.show();
+    }
+    
     @Override
     public void onLocationChanged(Location location) {
         model.setLocation(location);
